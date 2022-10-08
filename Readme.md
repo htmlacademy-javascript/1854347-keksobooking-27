@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг»
 
 * Студент: [Антонина](https://up.htmlacademy.ru/javascript/27/user/1854347).
-* Наставник: `Неизвестно`.
+* Наставник: [Дмитрий (sench) Железцов](https://htmlacademy.ru/profile/sench).
 
 ---
 
