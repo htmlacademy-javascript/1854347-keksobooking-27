@@ -1,12 +1,14 @@
-let getRandomInteger = (min, max) => {
+const getRandomInteger = (min, max) => {
   if (isFinite(min) && isFinite(max)) {
     const a = Math.min(Math.abs(min), Math.abs(max));
     const b = Math.max(Math.abs(min), Math.abs(max));
     return Math.trunc(Math.random() * (b - a)) + a;
-  } else {return 'Не число!!';}
-}
+  } else {
+    return 'Не число!!';
+  }
+};
 
-let getCordinatePoint = (min, max, comma = 1) => {
+const getCordinatePoint = (min, max, comma = 1) => {
   if (isFinite(min) && isFinite(max) && isFinite(comma)) {
     const a = Math.min(Math.abs(min), Math.abs(max));
     const b = Math.max(Math.abs(min), Math.abs(max));
@@ -15,7 +17,7 @@ let getCordinatePoint = (min, max, comma = 1) => {
   } else {
     return 'Не число!!';
   }
-}
+};
 
 getRandomInteger(1, 100);
 getCordinatePoint(1, 2000, 2);
