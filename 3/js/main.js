@@ -71,10 +71,7 @@ const PHOTOS = [
 
 const COUNT_ELEMENT = 10;
 
-const arrayRandElement = (arr) => {
-  const rand = Math.floor(Math.random() * arr.length);
-  return arr[rand];
-};
+const arrayRandElement = (items) => items[getRandomInteger(0, items.length - 1)];
 
 const getAvatar = () => {
   const index = `0${getRandomInteger(1, 10)}`.slice(-2);
@@ -92,12 +89,12 @@ const getRandomArray = () => (
       price: getRandomInteger(1, 1000),
       type: arrayRandElement(TYPES),
       rooms: getRandomInteger(1,10),
-      gests: getRandomInteger(1,10),
+      guests: getRandomInteger(1,10),
       checkin: arrayRandElement(TIMES),
       checkout: arrayRandElement(TIMES),
-      features: arrayRandElement(FEATURES),
+      features: FEATURES.slice(0, getRandomInteger(1, FEATURES.length)),
       description: arrayRandElement(DESCRIPTIONS),
-      photos: arrayRandElement(PHOTOS),
+      photos: PHOTOS.slice(0, getRandomInteger(1, PHOTOS.length)),
     },
     location: {
       lat: getCordinatePoint(35.65, 35.7, 5),
