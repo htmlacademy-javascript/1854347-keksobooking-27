@@ -21,10 +21,10 @@ export const getCordinatePoint = (min, max, comma = 1) => {
 
 export const randomNumber = () => {
   const id = getRandomInteger(1, 10);
-  if (id <10)
-  {return (`0${id}`);
+  if (id < 10) {
+    return (`0${id}`);
   } else {
-    (`${id}`);
+    return ( `${id}` );
   }
 };
 

@@ -32,10 +32,10 @@ const insertTemplate = document.querySelector('#map-canvas');
 //находим шаблон
 const searchTemplate = document.querySelector('#card').content.querySelector('.popup');
 
-export const creatArrElement =(index) => {
+export const creatArrElement = (index) => {
 //генератор наполнения
   const dataUsers = getArrElement(index);
-//запуск наполнеия
+  //запуск наполнеия
   dataUsers.forEach((element) => {
     const {
       author,
