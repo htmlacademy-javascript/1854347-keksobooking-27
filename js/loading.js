@@ -45,4 +45,13 @@ export const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS};
+//константа названий типов здаваемого помещения
+export const HOUSE = {
+  flat: 'Квартира ',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель',
+};
+
+export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, HOUSE};
