@@ -45,4 +45,25 @@ export const PHOTOS = [
   'https://assets.htmlacademy.ru/content/intensive/javascript-1/keksobooking/claire-rendall-b6kAwr1i0Iw.jpg',
 ];
 
-export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS};
+//константа названий типов здаваемого помещения
+
+export const OFFER_TYPE = {
+  flat: 'Квартира',
+  bungalow: 'Бунгало',
+  house: 'Дом',
+  palace: 'Дворец',
+  hotel: 'Отель'
+};
+
+export const OFFER_FEATURES = {
+  wifi: 'Вай-фай',
+  dishwasher: 'Посудомоечная машина',
+  parking: 'паркинг',
+  washer: 'Стиральная машина',
+  elevator: 'Лифт',
+  conditioner: 'Кондиционер'
+};
+
+export const ELEMENT_COUNT = 10;
+
+export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, OFFER_TYPE, OFFER_FEATURES, ELEMENT_COUNT};
