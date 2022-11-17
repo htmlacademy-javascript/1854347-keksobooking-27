@@ -47,7 +47,7 @@ export const PHOTOS = [
 
 //константа названий типов здаваемого помещения
 
-export const offerType = {
+export const OFFER_TYPE = {
   flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
@@ -55,7 +55,7 @@ export const offerType = {
   hotel: 'Отель'
 };
 
-export const offerFeatures = {
+export const OFFER_FEATURES = {
   wifi: 'Вай-фай',
   dishwasher: 'Посудомоечная машина',
   parking: 'паркинг',
@@ -66,4 +66,4 @@ export const offerFeatures = {
 
 export const ELEMENT_COUNT = 10;
 
-export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, offerType, offerFeatures, ELEMENT_COUNT};
+export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, OFFER_TYPE, OFFER_FEATURES, ELEMENT_COUNT};

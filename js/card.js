@@ -1,5 +1,5 @@
 import { getRandomInteger, getRandomFloat } from './util.js';
-import {ELEMENT_COUNT} from './loading.js'
+import {ELEMENT_COUNT} from './loading.js';
 import {
   getAvatar,
   getRandomFeatures,
@@ -8,7 +8,7 @@ import {
   getRandomTitle,
   getRandomType,
   getRandomTime
-}  from './data.js';
+} from './data.js';
 
 export const creatArrElement = () => {
   const location = {

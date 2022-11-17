@@ -1,12 +1,7 @@
 import { TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS } from './loading.js';
 import { getRandomInteger, getRandArray, arrayRandElement } from './util.js';
 
-const getAvatarFunction = () => {
-  return () => {
-    return `img/avatars/user${getRandomInteger(1, 10)}.png`;
-  };
-};
-
+const getAvatarFunction = () => () => `img/avatars/user${getRandomInteger(1, 10)}.png`;
 
 export const getAvatar = getAvatarFunction();
 
@@ -25,4 +20,4 @@ export default{
   getRandomTitle,
   getRandomType,
   getRandomTime
-}
+};
