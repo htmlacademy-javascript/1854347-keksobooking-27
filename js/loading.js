@@ -46,12 +46,24 @@ export const PHOTOS = [
 ];
 
 //константа названий типов здаваемого помещения
-export const HOUSE = {
-  flat: 'Квартира ',
+
+export const offerType = {
+  flat: 'Квартира',
   bungalow: 'Бунгало',
   house: 'Дом',
   palace: 'Дворец',
-  hotel: 'Отель',
+  hotel: 'Отель'
 };
 
-export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, HOUSE};
+export const offerFeatures = {
+  wifi: 'Вай-фай',
+  dishwasher: 'Посудомоечная машина',
+  parking: 'паркинг',
+  washer: 'Стиральная машина',
+  elevator: 'Лифт',
+  conditioner: 'Кондиционер'
+};
+
+export const ELEMENT_COUNT = 10;
+
+export default {TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS, offerType, offerFeatures, ELEMENT_COUNT};

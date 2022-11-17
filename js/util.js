@@ -8,7 +8,9 @@ export const getRandomInteger = (min, max) => {
   }
 };
 
-export const getCordinatePoint = (min, max, comma = 1) => {
+export const arrayRandElement = (items) => items[getRandomInteger(0, items.length - 1)];
+
+export const getRandomFloat = (min, max, comma = 1) => {
   if (isFinite(min) && isFinite(max) && isFinite(comma)) {
     const a = Math.min(Math.abs(min), Math.abs(max));
     const b = Math.max(Math.abs(min), Math.abs(max));
@@ -19,16 +21,14 @@ export const getCordinatePoint = (min, max, comma = 1) => {
   }
 };
 
-export const randomNumber = () => {
-  const id = getRandomInteger(1, 10);
-  if (id < 10) {
-    return (`0${id}`);
-  } else {
-    return ( `${id}` );
+
+export const getRandArray = (array) => {
+  const result = array.filter(() => getRandomInteger(0, 1));
+  if (result.length === 0) {
+    result.push(arrayRandElement(array));
   }
+  return result;
 };
 
-export const arrayRandElement = (items) => items[getRandomInteger(0, items.length - 1)];
-
-export default {getRandomInteger, getCordinatePoint, arrayRandElement, randomNumber};
+export default {getRandomInteger, getRandomFloat, arrayRandElement, getRandArray };
 
