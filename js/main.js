@@ -6,4 +6,4 @@ const offers = creatArrElements();
 const cards = offers.map(offerToCard);
 
 const blockMap = document.querySelector('#map-canvas');
-blockMap.append(cards[0]);
+blockMap.append(cards[3]);
