@@ -1,4 +1,4 @@
-import {OFFER_TYPE, OFFER_FEATURES } from './loading.js';
+import {OFFER_TYPE, OFFER_FEATURES } from './const.js';
 
 const offerTemplate = document.querySelector('#card')
   .content
@@ -68,6 +68,7 @@ const fillTime = (card, adv) => {
     hide(popupElement);
   }
 };
+
 const fillFeatures = (card, adv) => {
   const popupElement = card.querySelector('.popup__features');
   if (adv.offer.features) {
@@ -78,6 +79,7 @@ const fillFeatures = (card, adv) => {
     hide(popupElement);
   }
 };
+
 const fillDescription = (card, adv) => {
   const popupElement = card.querySelector('.popup__description');
   if (adv.offer.description) {

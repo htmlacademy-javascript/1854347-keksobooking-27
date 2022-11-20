@@ -1,3 +1,5 @@
+const ALERT_SHOW_TIME = 5000;
+
 export const getRandomInteger = (min, max) => {
   if (isFinite(min) && isFinite(max)) {
     const a = Math.min(Math.abs(min), Math.abs(max));
@@ -7,8 +9,6 @@ export const getRandomInteger = (min, max) => {
     return 'Не число!!';
   }
 };
-
-export const arrayRandElement = (items) => items[getRandomInteger(0, items.length - 1)];
 
 export const getRandomFloat = (min, max, comma = 1) => {
   if (isFinite(min) && isFinite(max) && isFinite(comma)) {
@@ -21,6 +21,7 @@ export const getRandomFloat = (min, max, comma = 1) => {
   }
 };
 
+export const arrayRandElement = (items) => items[getRandomInteger(0, items.length - 1)];
 
 export const getRandArray = (array) => {
   const result = array.filter(() => getRandomInteger(0, 1));
@@ -30,5 +31,15 @@ export const getRandArray = (array) => {
   return result;
 };
 
-export default {getRandomInteger, getRandomFloat, arrayRandElement, getRandArray };
+export const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.classList.add('modal-alert');
+  alertContainer.textContent = message;
+  document.body.append(alertContainer);
+  setTimeout(() => {
+    alertContainer.remove();
+  }, ALERT_SHOW_TIME);
+};
+
+export default {getRandomInteger, getRandomFloat, arrayRandElement, getRandArray, showAlert };
 

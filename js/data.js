@@ -1,4 +1,4 @@
-import { TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS } from './loading.js';
+import { TITLES, TYPES, TIMES, FEATURES, DESCRIPTIONS, PHOTOS } from './const.js';
 import { getRandomInteger, getRandArray, arrayRandElement } from './util.js';
 
 const getAvatarFunction = () => () => `img/avatars/user${getRandomInteger(1, 10)}.png`;
