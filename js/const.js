@@ -9,7 +9,7 @@ export const OFFER_TYPE = {
 export const OFFER_FEATURES = {
   wifi: 'Вай-фай',
   dishwasher: 'Посудомоечная машина',
-  parking: 'паркинг',
+  parking: 'Паркинг',
   washer: 'Стиральная машина',
   elevator: 'Лифт',
   conditioner: 'Кондиционер'
@@ -45,5 +45,6 @@ export const DEFAULT_COORDINATE = {
 };
 
 export const API_URL = 'https://27.javascript.pages.academy/keksobooking';
+export const FILE_TYPES = ['jpg', 'jpeg', 'png'];
 
-export default { API_URL, OFFER_TYPE, OFFER_FEATURES, ELEMENT_COUNT, ROOMS_OPTION, ROOMS_ERRORS, TYPE_OPTINS, DEFAULT_COORDINATE};
+export default { API_URL, OFFER_TYPE, OFFER_FEATURES, ELEMENT_COUNT, ROOMS_OPTION, ROOMS_ERRORS, TYPE_OPTINS, DEFAULT_COORDINATE, FILE_TYPES};

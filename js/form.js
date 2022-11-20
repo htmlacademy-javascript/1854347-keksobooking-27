@@ -1,4 +1,4 @@
-import { ROOMS_OPTION, ROOMS_ERRORS, TYPE_OPTINS } from './const.js';
+import { ROOMS_OPTION, ROOMS_ERRORS, TYPE_OPTINS, FILE_TYPES } from './const.js';
 import { sendOfferForm } from './api.js';
 
 const form = document.querySelector('.ad-form');
@@ -16,23 +16,47 @@ const typeField = form.querySelector('#type');
 const priceField = form.querySelector('#price');
 const timeinField = form.querySelector('#timein');
 const timeoutField = form.querySelector('#timeout');
+const resetButton = document.querySelector('.ad-form__reset');
+const avatarField = form.querySelector('#avatar');
+const previewAvatar = form.querySelector('.ad-form-header__preview img');
+const photoField = form.querySelector('#images');
+const containerPhotos = form.querySelector('.ad-form__photo');
+
+const checkFileTypes = (fileName) => FILE_TYPES.some((it) => fileName.toLowerCase().endsWith(it));
+
+avatarField.addEventListener('change', () => {
+  const file = avatarField.files[0];
+  if (checkFileTypes(file.name)) {
+    previewAvatar.src = URL.createObjectURL(file);
+  }
+});
+
+photoField.addEventListener('change', () => {
+  const files = photoField.files;
+  const fragment = document.createDocumentFragment();
+  for (let i = 0; i < files.length; i++) {
+    const file = files[i];
+    if (checkFileTypes(file.name)) {
+      const img = document.createElement('img');
+      img.src = URL.createObjectURL(file);
+      img.classList.add('ad-form__photo');
+      fragment.appendChild(img);
+    }
+  }
+  containerPhotos.appendChild(fragment);
+});
 
 const setOfferFormSubmit = (onSuccess, onFail) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-
     const isValid = pristine.validate();
     if (isValid) {
-
       const formData = new FormData(evt.target);
-
       sendOfferForm(formData, onSuccess, onFail);
-
     }
   });
 };
 
-const resetButton = document.querySelector('.ad-form__reset');
 const setResetButtonClick = (reset) => {
   resetButton.addEventListener('click', reset);
 };
@@ -135,7 +159,6 @@ const resetForm = () => {
   capacityField.value = '3';
   timeinField.value = '12:00';
   const featuresForm = form.querySelectorAll('.features__checkbox');
-
   featuresForm.forEach((elem) => {
     elem.checked = false;
   });
