@@ -68,6 +68,7 @@ const fillTime = (card, adv) => {
     hide(popupElement);
   }
 };
+
 const fillFeatures = (card, adv) => {
   const popupElement = card.querySelector('.popup__features');
   if (adv.offer.features) {
@@ -78,6 +79,7 @@ const fillFeatures = (card, adv) => {
     hide(popupElement);
   }
 };
+
 const fillDescription = (card, adv) => {
   const popupElement = card.querySelector('.popup__description');
   if (adv.offer.description) {

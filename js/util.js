@@ -8,8 +8,6 @@ export const getRandomInteger = (min, max) => {
   }
 };
 
-export const arrayRandElement = (items) => items[getRandomInteger(0, items.length - 1)];
-
 export const getRandomFloat = (min, max, comma = 1) => {
   if (isFinite(min) && isFinite(max) && isFinite(comma)) {
     const a = Math.min(Math.abs(min), Math.abs(max));
@@ -21,6 +19,7 @@ export const getRandomFloat = (min, max, comma = 1) => {
   }
 };
 
+export const arrayRandElement = (items) => items[getRandomInteger(0, items.length - 1)];
 
 export const getRandArray = (array) => {
   const result = array.filter(() => getRandomInteger(0, 1));
@@ -30,5 +29,16 @@ export const getRandArray = (array) => {
   return result;
 };
 
-export default {getRandomInteger, getRandomFloat, arrayRandElement, getRandArray };
+export const showAlert = (message) => {
+  const alertContainer = document.createElement('div');
+  alertContainer.classList.add('modal-alert');
+  alertContainer.textContent = message;
+  document.body.append(alertContainer);
+
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 4000);
+};
+
+export default {getRandomInteger, getRandomFloat, arrayRandElement, getRandArray, showAlert };
 
