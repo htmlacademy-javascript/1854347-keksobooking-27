@@ -1,5 +1,5 @@
 import { getRandomInteger, getRandomFloat } from './util.js';
-import {ELEMENT_COUNT} from './loading.js';
+import {ELEMENT_COUNT} from './const.js';
 import {
   getAvatar,
   getRandomFeatures,

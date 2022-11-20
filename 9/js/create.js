@@ -1,4 +1,4 @@
-import {OFFER_TYPE, OFFER_FEATURES } from './loading.js';
+import {OFFER_TYPE, OFFER_FEATURES } from './const.js';
 
 const offerTemplate = document.querySelector('#card')
   .content

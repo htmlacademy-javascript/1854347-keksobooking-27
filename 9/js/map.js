@@ -1,4 +1,4 @@
-import { DEFAULT_COORDINATE, ELEMENT_COUNT } from './loading.js';
+import { DEFAULT_COORDINATE, ELEMENT_COUNT } from './const.js';
 import {offerToCard} from './create.js';
 import {getSimilarOffer} from './api.js';
 import { deactivatePage, activatePage } from './form.js';

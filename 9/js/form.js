@@ -1,4 +1,4 @@
-import { ROOMS_OPTION, ROOMS_ERRORS, TYPE_OPTINS } from './loading.js';
+import { ROOMS_OPTION, ROOMS_ERRORS, TYPE_OPTINS } from './const.js';
 import { sendOfferForm } from './api.js';
 
 const form = document.querySelector('.ad-form');

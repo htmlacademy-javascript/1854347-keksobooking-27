@@ -1,28 +1,33 @@
-const getSimilarOffer = (onSuccess, onFail) => fetch('https://27.javascript.pages.academy/keksobooking/data')
-  .then((response) => response.json())
-  .then((offers) => {
-    onSuccess(offers);
-  })
-  .catch(() => {
-    onFail();
-  });
+import {API_URL} from './const.js';
 
-const sendOfferForm = (formData, onSuccess, onFail) => fetch('https://27.javascript.pages.academ/keksobooking',
-  {
-    method: 'POST',
-    body: formData,
-  },
-)
-  .then((response) => {
-    if (response.ok) {
-      onSuccess();
-    } else {
+const sendOfferForm = (formData, onSuccess, onFail) =>{
+  fetch(API_URL,
+    {
+      method: 'POST',
+      body: formData,
+    },
+  )
+    .then((response) => {
+      if (response.ok) {
+        onSuccess();
+      } else {
+        onFail();
+      }
+    })
+    .catch(() => {
       onFail();
-    }
-  })
-  .catch(() => {
-    onFail();
-  });
+    });
+};
 
+const getSimilarOffer = (onSuccess, onFail) => {
+  fetch(`${API_URL}/data`)
+    .then((response) => response.json())
+    .then((offers) => {
+      onSuccess(offers);
+    })
+    .catch(() => {
+      onFail();
+    });
+};
 
 export { getSimilarOffer, sendOfferForm };

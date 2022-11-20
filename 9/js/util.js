@@ -1,3 +1,5 @@
+const ALERT_SHOW_TIME = 5000;
+
 export const getRandomInteger = (min, max) => {
   if (isFinite(min) && isFinite(max)) {
     const a = Math.min(Math.abs(min), Math.abs(max));
@@ -34,10 +36,9 @@ export const showAlert = (message) => {
   alertContainer.classList.add('modal-alert');
   alertContainer.textContent = message;
   document.body.append(alertContainer);
-
   setTimeout(() => {
     alertContainer.remove();
-  }, 4000);
+  }, ALERT_SHOW_TIME);
 };
 
 export default {getRandomInteger, getRandomFloat, arrayRandElement, getRandArray, showAlert };
