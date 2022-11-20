@@ -16,18 +16,15 @@ const typeField = form.querySelector('#type');
 const priceField = form.querySelector('#price');
 const timeinField = form.querySelector('#timein');
 const timeoutField = form.querySelector('#timeout');
+const sliderElement = document.querySelector('.ad-form__slider');
 
 const setOfferFormSubmit = (onSuccess, onFail) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-
     const isValid = pristine.validate();
     if (isValid) {
-
       const formData = new FormData(evt.target);
-
       sendOfferForm(formData, onSuccess, onFail);
-
     }
   });
 };
@@ -50,12 +47,11 @@ pristine.addValidator(capacityField, validateRooms);
 
 roomsField.addEventListener('change', () => pristine.validate(capacityField));
 capacityField.addEventListener('change', () => pristine.validate(roomsField));
-const validatePrice = () => priceField.value >= TYPE_OPTINS[typeField.value];
 
+const validatePrice = () => priceField.value >= TYPE_OPTINS[typeField.value];
 const getPriceErrorMessage = () => `Минимальная цена ${TYPE_OPTINS[typeField.value]}`;
 
 pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
-const sliderElement = document.querySelector('.ad-form__slider');
 
 noUiSlider.create(sliderElement, {
   range: {
@@ -135,7 +131,6 @@ const resetForm = () => {
   capacityField.value = '3';
   timeinField.value = '12:00';
   const featuresForm = form.querySelectorAll('.features__checkbox');
-
   featuresForm.forEach((elem) => {
     elem.checked = false;
   });

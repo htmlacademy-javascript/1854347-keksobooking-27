@@ -12,7 +12,6 @@ const createSuccessMessage = () => {
   document.addEventListener('keydown', eventListener);
   document.addEventListener('click', eventListener);
   document.body.appendChild(message);
-
 };
 
 const createErrorMessage = () => {
