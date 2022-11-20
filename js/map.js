@@ -1,8 +1,6 @@
 import { DEFAULT_COORDINATE, ELEMENT_COUNT } from './const.js';
 import {offerToCard} from './create.js';
-import {getSimilarOffer} from './api.js';
 import { deactivatePage, activatePage } from './form.js';
-import {showAlert} from './util.js';
 
 deactivatePage();
 
@@ -40,15 +38,14 @@ mainMarker.on('moveend', (evt) => {
 });
 
 
-getSimilarOffer((offers) => {
-
+const markerGroup = L.layerGroup().addTo(map);
+const renderSimilarOffers = (offers) => {
+  markerGroup.clearLayers();
   const regularIcon = L.icon({
     iconUrl: 'img/pin.svg',
     iconSize: [40, 40],
     iconAnchor: [20, 40],
   });
-  const markerGroup = L.layerGroup().addTo(map);
-
   offers.slice(0, ELEMENT_COUNT)
     .forEach((offer) => {
       const { location: { lat, lng } } = offer;
@@ -65,11 +62,8 @@ getSimilarOffer((offers) => {
         .addTo(markerGroup)
         .bindPopup(offerToCard(offer));
     });
-
-}, () => {
-  showAlert('Не удалось получить похожие объявления. Попробуй еще раз!');
-});
+};
 
 const resetMainMark = () => mainMarker.setLatLng(DEFAULT_COORDINATE);
 
-export { resetMainMark };
+export { resetMainMark, renderSimilarOffers };

@@ -9,7 +9,7 @@ export const OFFER_TYPE = {
 export const OFFER_FEATURES = {
   wifi: 'Вай-фай',
   dishwasher: 'Посудомоечная машина',
-  parking: 'паркинг',
+  parking: 'Паркинг',
   washer: 'Стиральная машина',
   elevator: 'Лифт',
   conditioner: 'Кондиционер'

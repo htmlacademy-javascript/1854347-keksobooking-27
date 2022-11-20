@@ -16,23 +16,19 @@ const typeField = form.querySelector('#type');
 const priceField = form.querySelector('#price');
 const timeinField = form.querySelector('#timein');
 const timeoutField = form.querySelector('#timeout');
+const resetButton = document.querySelector('.ad-form__reset');
 
 const setOfferFormSubmit = (onSuccess, onFail) => {
   form.addEventListener('submit', (evt) => {
     evt.preventDefault();
-
     const isValid = pristine.validate();
     if (isValid) {
-
       const formData = new FormData(evt.target);
-
       sendOfferForm(formData, onSuccess, onFail);
-
     }
   });
 };
 
-const resetButton = document.querySelector('.ad-form__reset');
 const setResetButtonClick = (reset) => {
   resetButton.addEventListener('click', reset);
 };
@@ -135,7 +131,6 @@ const resetForm = () => {
   capacityField.value = '3';
   timeinField.value = '12:00';
   const featuresForm = form.querySelectorAll('.features__checkbox');
-
   featuresForm.forEach((elem) => {
     elem.checked = false;
   });
