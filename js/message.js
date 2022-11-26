@@ -1,38 +1,43 @@
-const createSuccessMessage = () => {
-  const message = document.querySelector('#success')
-    .content
-    .querySelector('.success');
-  const eventListener = (evt) => {
-    if (evt.type === 'click' || evt.key === 'Escape') {
-      message.remove();
-      document.removeEventListener('keydown', eventListener);
-      document.removeEventListener('click', eventListener);
-    }
-  };
-  document.addEventListener('keydown', eventListener);
-  document.addEventListener('click', eventListener);
-  document.body.appendChild(message);
+import {
+  isEscEvent
+} from './util.js';
 
+const successPopup = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
+const errorPopup = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
+const errorPopupMessage = errorPopup.querySelector('.error__message');
+const closeErrorButton = errorPopup.querySelector('.error__button');
+
+const showSuccessModal = () => {
+  document.body.appendChild(successPopup);
+  document.addEventListener('keydown', (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      successPopup.remove();
+    }
+  });
+  document.addEventListener('click', () => {
+    successPopup.remove();
+  });
 };
 
-const createErrorMessage = () => {
-  const message = document.querySelector('#error')
-    .content
-    .querySelector('.error');
-  const button = message.querySelector('.error__button');
-  const eventListener = (evt) => {
-    if (evt.type === 'click' || evt.key === 'Escape') {
-      message.remove();
-      document.removeEventListener('keydown', eventListener);
-      document.removeEventListener('click', eventListener);
-      button.removeEventListener('click', eventListener);
+const showErrorModal = () => {
+  errorPopupMessage.textContent = 'Ошибка загрузки данных';
+  document.body.appendChild(errorPopup);
+  document.addEventListener('keydown', (evt) => {
+    if (isEscEvent(evt)) {
+      evt.preventDefault();
+      errorPopup.remove();
     }
-  };
-  document.addEventListener('keydown', eventListener);
-  document.addEventListener('click', eventListener);
-  button.addEventListener('click', eventListener);
-  document.body.appendChild(message);
-
+  });
+  closeErrorButton.addEventListener('click', () => {
+    errorPopup.remove();
+  });
+  document.addEventListener('click', () => {
+    errorPopup.remove();
+  });
 };
 
-export { createSuccessMessage, createErrorMessage };
+export {
+  showSuccessModal,
+  showErrorModal
+};

@@ -1,167 +1,55 @@
-import { ROOMS_OPTION, ROOMS_ERRORS, TYPE_OPTINS, FILE_TYPES } from './const.js';
-import { sendOfferForm } from './api.js';
+import {
+  renderPhoto
+} from './photos.js';
 
-const form = document.querySelector('.ad-form');
-const pristine = new Pristine(form, {
-  classTo: 'ad-form__element',
-  errorClass: 'ad-form__element--invalid',
-  errorTextParent: 'ad-form__element',
-  errorTextClass: 'text-help'
-});
+const filterForm = document.querySelector('.map__filters');
+const adForm = document.querySelector('.ad-form');
 
-const titleField = form.querySelector('#title');
-const roomsField = form.querySelector('#room_number');
-const capacityField = form.querySelector('#capacity');
-const typeField = form.querySelector('#type');
-const priceField = form.querySelector('#price');
-const timeinField = form.querySelector('#timein');
-const timeoutField = form.querySelector('#timeout');
-const resetButton = document.querySelector('.ad-form__reset');
-const avatarField = form.querySelector('#avatar');
-const previewAvatar = form.querySelector('.ad-form-header__preview img');
-const photoField = form.querySelector('#images');
-const containerPhotos = form.querySelector('.ad-form__photo');
+const mapFormBlocks = filterForm.children;
+const adFormBlocks = adForm.children;
 
-const checkFileTypes = (fileName) => FILE_TYPES.some((it) => fileName.toLowerCase().endsWith(it));
+const avatarForm = adForm.querySelector('.ad-form-header__input');
+const avatarPreviewForm = adForm.querySelector('.ad-form-header__preview img');
+const photoForm = adForm.querySelector('.ad-form__input');
+const photoPreviewForm = adForm.querySelector('.ad-form__photo-preview img');
 
-avatarField.addEventListener('change', () => {
-  const file = avatarField.files[0];
-  if (checkFileTypes(file.name)) {
-    previewAvatar.src = URL.createObjectURL(file);
+const setDisabled = (elements) => {
+  for (const element of elements) {
+    element.disabled = true;
   }
-});
+};
 
-photoField.addEventListener('change', () => {
-  const files = photoField.files;
-  const fragment = document.createDocumentFragment();
-  for (let i = 0; i < files.length; i++) {
-    const file = files[i];
-    if (checkFileTypes(file.name)) {
-      const img = document.createElement('img');
-      img.src = URL.createObjectURL(file);
-      img.classList.add('ad-form__photo');
-      fragment.appendChild(img);
-    }
+const disablePage = () => {
+  filterForm.classList.add('map__filters--disabled');
+  setDisabled(mapFormBlocks);
+  adForm.classList.add('ad-form--disabled');
+  setDisabled(adFormBlocks);
+};
+
+disablePage();
+
+const setEnabled = (elements) => {
+  for (const element of elements) {
+    element.disabled = false;
   }
-  containerPhotos.appendChild(fragment);
-});
-
-const setOfferFormSubmit = (onSuccess, onFail) => {
-  form.addEventListener('submit', (evt) => {
-    evt.preventDefault();
-    const isValid = pristine.validate();
-    if (isValid) {
-      const formData = new FormData(evt.target);
-      sendOfferForm(formData, onSuccess, onFail);
-    }
-  });
 };
 
-const setResetButtonClick = (reset) => {
-  resetButton.addEventListener('click', reset);
+const activateAd = () => {
+  adForm.classList.remove('ad-form--disabled');
+  setEnabled(adFormBlocks);
+  avatarForm.addEventListener('change', () => renderPhoto(avatarForm, avatarPreviewForm));
+  photoForm.addEventListener('change', () => renderPhoto(photoForm, photoPreviewForm));
 };
 
-form.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  pristine.validate();
-});
-
-const getRoomsErrorMessage = () => ROOMS_ERRORS[roomsField.value];
-const validateRooms = () => ROOMS_OPTION[roomsField.value].includes(capacityField.value);
-
-pristine.addValidator(roomsField, validateRooms, getRoomsErrorMessage);
-pristine.addValidator(capacityField, validateRooms);
-
-roomsField.addEventListener('change', () => pristine.validate(capacityField));
-capacityField.addEventListener('change', () => pristine.validate(roomsField));
-const validatePrice = () => priceField.value >= TYPE_OPTINS[typeField.value];
-
-const getPriceErrorMessage = () => `Минимальная цена ${TYPE_OPTINS[typeField.value]}`;
-
-pristine.addValidator(priceField, validatePrice, getPriceErrorMessage);
-const sliderElement = document.querySelector('.ad-form__slider');
-
-noUiSlider.create(sliderElement, {
-  range: {
-    min: 0,
-    max: 100000,
-  },
-  connect: 'lower',
-  step: 1,
-  start: 1000,
-  format: {
-    to: (value) => value.toFixed(0),
-    from: (value) => parseFloat(value),
-  }
-});
-
-sliderElement.noUiSlider.on('update', () => {
-  priceField.value = sliderElement.noUiSlider.get();
-});
-
-priceField.addEventListener('change', () => {
-  sliderElement.noUiSlider.set(priceField.value);
-});
-
-typeField.addEventListener('change', () => {
-  priceField.placeholder = TYPE_OPTINS[typeField.value];
-  sliderElement.noUiSlider.updateOptions({
-    range: {
-      min: TYPE_OPTINS[typeField.value],
-      max: 100000
-    }
-  });
-});
-
-const switchStateElements = (elements, state) => {
-  elements.forEach((element) => {
-    element.disabled = state;
-  });
+const activateMapFilter = () => {
+  filterForm.classList.remove('map__filters--disabled');
+  setEnabled(mapFormBlocks);
 };
 
-timeinField.addEventListener('change', () => {
-  timeoutField.value = timeinField.value;
-});
-
-timeoutField.addEventListener('change', () => {
-  timeinField.value = timeoutField.value;
-});
-
-const switchStateForm = (state) => {
-  const fieldsets = form.querySelectorAll('fieldset');
-  form.classList.toggle('ad-form--disabled', state);
-  switchStateElements(fieldsets, state);
+export {
+  avatarPreviewForm,
+  photoPreviewForm,
+  disablePage,
+  activateAd,
+  activateMapFilter
 };
-
-const switchStateFilter = (state) => {
-  const filter = document.querySelector('.map__filters');
-  const selects = filter.querySelectorAll('select');
-  const fieldsets = filter.querySelectorAll('fieldset');
-  filter.classList.toggle('map__filters--disabled', state);
-  switchStateElements(selects, state);
-  switchStateElements(fieldsets, state);
-};
-
-const switchStatePage = (state) => {
-  switchStateForm(state);
-  switchStateFilter(state);
-};
-
-const deactivatePage = () => switchStatePage(true);
-const activatePage = () => switchStatePage(false);
-
-const resetForm = () => {
-  titleField.value = '';
-  typeField.value = 'flat';
-  sliderElement.noUiSlider.set(1000);
-  priceField.value = '1000';
-  roomsField.value = '1';
-  capacityField.value = '3';
-  timeinField.value = '12:00';
-  const featuresForm = form.querySelectorAll('.features__checkbox');
-  featuresForm.forEach((elem) => {
-    elem.checked = false;
-  });
-};
-
-export { deactivatePage, activatePage, setOfferFormSubmit, resetForm, setResetButtonClick };
