@@ -1,69 +1,119 @@
-import { DEFAULT_COORDINATE, ELEMENT_COUNT } from './const.js';
-import {offerToCard} from './create.js';
-import { deactivatePage, activatePage } from './form.js';
+import {
+  offerToCard
+} from './create.js';
+import {
+  activateAd,
+  activateMapFilter
+} from './form.js';
+import {
+  getSimilarOffer
+} from './api.js';
+import {
+  showAlert
+} from './show-alert.js';
+import {
+  resetFilter,
+  filterOffers
+} from './filter.js';
+import {
+  debounce
+} from './util.js';
+import {
+  ZOOM_MAP,
+  SIMILAR_AD_COUNT,
+  DEFAULT_COORDINATE,
+} from './const.js';
 
-deactivatePage();
+const L = window.L;
 
-const mapCoorToText = (coor) => `${coor.lat.toFixed(5)}, ${coor.lng.toFixed(5)}`;
-
-const addressField = document.querySelector('#address');
-addressField.value = mapCoorToText(DEFAULT_COORDINATE);
-
-const map = L.map('map-canvas')
-  .on('load', () => {
-    activatePage();
-  })
-  .setView(DEFAULT_COORDINATE, 10);
-
-L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png', {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-const mainIcon = L.icon({
+export const PIN_MAIN = L.icon({
   iconUrl: 'img/main-pin.svg',
   iconSize: [52, 52],
   iconAnchor: [26, 52],
 });
 
-const mainMarker = L.marker(DEFAULT_COORDINATE, {
-  draggable: true,
-  icon: mainIcon,
+export const PIN_AD = L.icon({
+  iconUrl: 'img/pin.svg',
+  iconSize: [40, 40],
+  iconAnchor: [20, 40],
 });
 
-mainMarker.addTo(map);
-
-mainMarker.on('moveend', (evt) => {
-  const address = evt.target.getLatLng();
-  addressField.value = mapCoorToText(address);
-});
-
-
-const markerGroup = L.layerGroup().addTo(map);
-const renderSimilarOffers = (offers) => {
-  markerGroup.clearLayers();
-  const regularIcon = L.icon({
-    iconUrl: 'img/pin.svg',
-    iconSize: [40, 40],
-    iconAnchor: [20, 40],
-  });
-  offers.slice(0, ELEMENT_COUNT)
-    .forEach((offer) => {
-      const { location: { lat, lng } } = offer;
-      const marker = L.marker(
-        {
-          lat,
-          lng,
-        },
-        {
-          icon: regularIcon
-        }
-      );
-      marker
-        .addTo(markerGroup)
-        .bindPopup(offerToCard(offer));
-    });
+const LeafletParameters = {
+  TILE_LAYER: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+  ATTRIBUTION: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
 };
 
-const resetMainMark = () => mainMarker.setLatLng(DEFAULT_COORDINATE);
+const map = L.map('map-canvas');
 
-export { resetMainMark, renderSimilarOffers };
+const getMap = (cb) => {
+  map.on('load', () => {
+    cb();
+  })
+    .setView(
+      DEFAULT_COORDINATE,
+      ZOOM_MAP);
+  L.tileLayer(
+    LeafletParameters.TILE_LAYER, {
+      attribution: LeafletParameters.ATTRIBUTION,
+    },
+  ).addTo(map);
+};
+
+const mainPin = L.marker(
+  DEFAULT_COORDINATE,
+  {
+    draggable: true,
+    icon: PIN_MAIN,
+  },
+);
+
+mainPin.addTo(map);
+
+const markers = [];
+
+const addPinOnMap = (place) => {
+  const marker = L.marker({
+    lat: place.location.lat,
+    lng: place.location.lng,
+  }, {
+    icon: PIN_AD,
+  });
+
+  marker.addTo(map).bindPopup(offerToCard(place),
+    {
+      keepInView: true,
+    },
+  );
+  markers.push(marker);
+};
+
+const renderPins = (places) => {
+  places.slice(0, SIMILAR_AD_COUNT).forEach((place) => {
+    addPinOnMap(place);
+  });
+};
+
+const removePins = () => {
+  markers.forEach((marker) => marker.remove());
+};
+
+getMap(() => {
+  activateAd();
+  getSimilarOffer((places) => {
+    renderPins(places);
+    filterOffers(debounce(() => {
+      removePins();
+      renderPins(resetFilter(places));
+    }));
+    activateMapFilter();
+  }, (error) => showAlert(error));
+});
+
+export {
+  getMap,
+  mainPin,
+  map,
+  addPinOnMap,
+  renderPins,
+  removePins
+};

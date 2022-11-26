@@ -1,92 +1,63 @@
-const setAnyValue = (id) => {
-  const field = document.querySelector(`#${id}`);
-  field.value = 'any';
-};
+import { DEFAULT_VALUE, MIN_PRICE, MAX_PRICE} from './const.js';
 
-const resetFilter = () => {
-  setAnyValue('housing-type');
-  setAnyValue('housing-price');
-  setAnyValue('housing-rooms');
-  setAnyValue('housing-guests');
-  const features = document.querySelectorAll('.map__features input');
-  features.forEach((elem) => {
-    elem.checked = false;
-  });
-};
+const filterForm = document.querySelector('.map__filters');
+const typeFilter = filterForm.querySelector('#housing-type');
+const priceFilter = filterForm.querySelector('#housing-price');
+const roomsFilter = filterForm.querySelector('#housing-rooms');
+const guestsFilter = filterForm.querySelector('#housing-guests');
+const featuresFilter = filterForm.querySelector('#housing-features');
 
-const filterTypeField = document.querySelector('#housing-type');
-const filterPriceField = document.querySelector('#housing-price');
-const filterRoomsField = document.querySelector('#housing-rooms');
-const filterGuestsField = document.querySelector('#housing-guests');
-const filterFeaturesFields = document.querySelectorAll('.map__checkbox');
+const checkType = (data) => typeFilter.value === data.offer.type || typeFilter.value === DEFAULT_VALUE;
 
-const filterType = (ad) => {
-  if (filterTypeField.value === 'any') {
-    return true;
-  }
-  return ad.offer.type === filterTypeField.value;
-};
-
-const filterPrice = (ad) => {
-  switch (filterPriceField.value) {
+const checkPrice = (data) => {
+  switch (priceFilter.value) {
+    case 'low':
+      return data.offer.price < MIN_PRICE;
+    case 'middle':
+      return data.offer.price >= MIN_PRICE && data.offer.price <= MAX_PRICE;
+    case 'high':
+      return data.offer.price > MAX_PRICE;
     case 'any':
       return true;
-    case 'low':
-      return ad.offer.price <= 10000;
-    case 'middle':
-      return ad.offer.price > 10000 && ad.offer.price <= 50000;
-    case 'high':
-      return ad.offer.price > 50000;
   }
 };
 
-const filterRooms = (ad) => {
-  if (filterRoomsField.value === 'any') {
+const checkRooms = (data) => {
+  if (roomsFilter.value === DEFAULT_VALUE) {
     return true;
   }
-  return ad.offer.rooms === +filterRoomsField.value;
+  return +roomsFilter.value === data.offer.rooms;
 };
 
-const filterGuests = (ad) => {
-  if (filterGuestsField.value === 'any') {
+const checkGuests = (data) => {
+  if (guestsFilter.value === DEFAULT_VALUE) {
     return true;
   }
-  return ad.offer.guests === +filterGuestsField.value;
+  return +guestsFilter.value === data.offer.guests;
 };
 
-const filterFeatures = (ad) => {
-  const featuresChecked = [];
-  filterFeaturesFields.forEach((feature) => {
-    if (feature.checked) {
-      featuresChecked.push(feature.value);
-    }
-  });
-
-  if (featuresChecked.length > 0 && ad.offer.features === undefined) {
-    return false;
+const checkFeatures = (data) => {
+  const checkedFeatures = Array.from(featuresFilter.querySelectorAll('input[type="checkbox"]:checked'));
+  const dataFeatures = data.offer.features;
+  if (dataFeatures) {
+    return checkedFeatures.every((feature) => dataFeatures.includes(feature.value));
   }
-  return featuresChecked.every((feature) => ad.offer.features.includes(feature));
 };
 
-const filterOffers = (ad) =>
-  filterType(ad) && filterPrice(ad) && filterRooms(ad) && filterGuests(ad) && filterFeatures(ad);
+const resetFilter = (data) => data.filter((value) =>
+  checkType(value) &&
+  checkPrice(value) &&
+  checkRooms(value) &&
+  checkGuests(value) &&
+  checkFeatures(value));
 
-const setChangeEventOnFilter = (renderSimilarOffers) => {
-  filterTypeField.addEventListener('change', () => {
-    renderSimilarOffers();
+const filterOffers = (cb) => {
+  filterForm.addEventListener('change', () => {
+    cb();
   });
-  filterPriceField.addEventListener('change', () => {
-    renderSimilarOffers();
-  });
-  filterRoomsField.addEventListener('change', () => {
-    renderSimilarOffers();
-  });
-  filterGuestsField.addEventListener('change', () => {
-    renderSimilarOffers();
-  });
-  filterFeaturesFields.forEach((feature) => feature.addEventListener('click', () => {
-    renderSimilarOffers();
-  }));
 };
 
-export { resetFilter, setChangeEventOnFilter, filterOffers };
+export {
+  resetFilter,
+  filterOffers
+};
