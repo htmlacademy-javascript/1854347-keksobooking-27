@@ -1,43 +1,48 @@
-import {
-  isEscEvent
-} from './util.js';
+const successMessageTemplate = document.querySelector('#success').content.querySelector('.success');
+const errorMessageTemplate = document.querySelector('#error').content.querySelector('.error');
+const bodyElement = document.querySelector('body');
 
-const successPopup = document.querySelector('#success').content.querySelector('.success').cloneNode(true);
-const errorPopup = document.querySelector('#error').content.querySelector('.error').cloneNode(true);
-const errorPopupMessage = errorPopup.querySelector('.error__message');
-const closeErrorButton = errorPopup.querySelector('.error__button');
+const getIsEsc = (evt) => evt.key === 'Escape' || evt.key === 'Esc';
 
-const showSuccessModal = () => {
-  document.body.appendChild(successPopup);
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      successPopup.remove();
-    }
-  });
-  document.addEventListener('click', () => {
-    successPopup.remove();
-  });
+const onMessageEscKeydown = (evt) => {
+  if (getIsEsc(evt)) {
+    evt.preventDefault();
+    hideMessage();
+  }
 };
 
-const showErrorModal = () => {
-  errorPopupMessage.textContent = 'Ошибка загрузки данных';
-  document.body.appendChild(errorPopup);
-  document.addEventListener('keydown', (evt) => {
-    if (isEscEvent(evt)) {
-      evt.preventDefault();
-      errorPopup.remove();
-    }
-  });
-  closeErrorButton.addEventListener('click', () => {
-    errorPopup.remove();
-  });
-  document.addEventListener('click', () => {
-    errorPopup.remove();
-  });
+const onOverlayClick = () => {
+  hideMessage();
 };
 
-export {
-  showSuccessModal,
-  showErrorModal
+const onErrorButtonClick = () => {
+  hideMessage();
 };
+
+function hideMessage() {
+  const messageElement = document.querySelector('.success') || document.querySelector('.error');
+  messageElement.remove();
+  document.removeEventListener('keydown', onMessageEscKeydown);
+  document.removeEventListener('click', onOverlayClick);
+  bodyElement.style.overflow = 'auto';
+}
+
+const showSuccessMessage = () => {
+  const successMessageElement = successMessageTemplate.cloneNode(true);
+  document.addEventListener('keydown', onMessageEscKeydown);
+  document.addEventListener('click', onOverlayClick);
+  bodyElement.append(successMessageElement);
+  bodyElement.style.overflow = 'hidden';
+};
+
+const showErrorMessage = () => {
+  const errorMessageElement = errorMessageTemplate.cloneNode(true);
+  const errorButtonElement = errorMessageElement.querySelector('.error__button');
+  document.addEventListener('keydown', onMessageEscKeydown);
+  document.addEventListener('click', onOverlayClick);
+  errorButtonElement.addEventListener('click', onErrorButtonClick);
+  bodyElement.append(errorMessageElement);
+  bodyElement.style.overflow = 'hidden';
+};
+
+export { showErrorMessage, showSuccessMessage };
